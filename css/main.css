@@ -1,3 +1,14 @@
 #nav-bar {
     background-color: rgb(50, 101, 134);
 }
+
+#timer {
+    background-color: rgb(50, 101, 134);
+    border: white solid 2px;
+    float: right;
+}
+
+input[id^="strim-btn-"] {
+    width: 40px;
+    max-height: 90px;
+}
