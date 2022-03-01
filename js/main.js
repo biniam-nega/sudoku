@@ -6,34 +6,38 @@ $(document).ready(function () {
     // Initialize some variables
     var duplicates = [];
     var givens = ['11', '13', '14', '15', '17', '27', '28', '29', '31', '32', '36', '42', '44', '48', '49', 
-        '52', '53', '56', '57', '58', '61', '62', '66', '68', '74', '78', '79', '81', '82', '83', '93', '95', 
+        '52', '53', '54', '56', '57', '58', '61', '62', '66', '68', '74', '78', '79', '81', '82', '83', '93', '95', 
         '96', '97', '99'];
     var values = [2, 7, 5, 3, 6, 1, 2, 4, 6, 8, 9, 6, 3, 8, 9, 3, 8, 6, 7, 2, 5, 4, 5, 1, 7, 2, 4, 3, 
         1, 4, 9, 6, 9, 5, 8, 7];
+    console.log(values.length, givens.length)
 
     // A function to add event handler to all the buttons
     function addListeners(givens) {
-        // var counter = 0;
-        // for (var i = 0; i <= 81; i++) {
-        //     if (givens[counter] === i) {
-        //         counter++;
-        //         continue;
-        //     }
-        //     (function () {
-        //         var c = i;
-        //         $('#strim-btn-' + i).click(function () {
-        //             var value = $(this).val() === '' ? 1 : parseInt($(this).val()) + 1;
-        //             if (value === 10) {
-        //                 value = '';
-        //             }
-        //             $(this).val(value);
-        //             check(c, 'row');
-        //             check(c, 'column');
-        //             check(c, 'square');
-        //             checkFinished();
-        //         });
-        //     }());
-        // }
+        for (var i = 1; i <= 9; i++) {
+            for (var j = 1; j <= 9; j++) {
+                var index = '' + i + j;
+                if(givens.inArray(index)) {
+                    continue;
+                }
+                (function () {
+                    var c = index;
+                    console.log(c);
+                    $('#btn-' + index).click(function () {
+                        console.log('clicked')
+                        var value = $(this).val() === '' ? 1 : parseInt($(this).val()) + 1;
+                        if (value === 10) {
+                            value = '';
+                        }
+                        $(this).val(value);
+                        check(c, 'row');
+                        check(c, 'column');
+                        check(c, 'square');
+                        checkFinished();
+                    });
+                }());
+            }
+        }
     }
 
     // returns the index of the button from 1-81
@@ -104,7 +108,7 @@ $(document).ready(function () {
     // A constructor for the entire board
     function Board(givens, values) {
         this.renderBoard = function () {
-            var counter = 0;
+            counter = 0;
             for (var i = 1; i <= 9; i++) {
                 for(var j = 1; j <= 9; j++) {
                     var index = '' + i + j;
@@ -114,7 +118,7 @@ $(document).ready(function () {
                         counter++;
                         continue;
                     }
-                    var button = new Button('', i)
+                    var button = new Button('', index);
                     $('#game-area').html($('#game-area').html() + button.render());
                 }
                 $('#game-area').html($('#game-area').html() + '<br/>');
