@@ -12,3 +12,7 @@ input[id^="btn-"] {
     width: 40px;
     height: 40px;
 }
+
+#message {
+    display: none;
+}

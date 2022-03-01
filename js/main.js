@@ -51,7 +51,7 @@ $(document).ready(function () {
     function addListeners(givens) {
         for (var i = 1; i <= 9; i++) {
             for (var j = 1; j <= 9; j++) {
-                var index = '' + i + j;
+                var index = '' + (i + 1) + (j + 1);
                 if (givens.inArray(index)) {
                     continue;
                 }
@@ -63,10 +63,10 @@ $(document).ready(function () {
                             value = '';
                         }
                         $(this).val(value);
-                        checkDif();
                         check(c, 'row');
                         check(c, 'column');
                         check(c, 'square');
+                        checkDif();
                         checkFinished();
                     });
                 }());
@@ -86,7 +86,8 @@ $(document).ready(function () {
                 var btn2Index = /[0-9]+/.exec(duplicates[i][1].attr('id'))[0];
                 duplicates[i][0].css('background-color', givens.inArray(btn1Index) ? 'darkgray': 'white');
                 duplicates[i][1].css('background-color', givens.inArray(btn2Index) ? 'darkgray': 'white');
-                duplicates.remove(i);
+                duplicates = duplicates.remove(i);
+                i--;
             }
         }
     }
@@ -121,10 +122,26 @@ $(document).ready(function () {
     }
 
     // A function that checks whether the game is finished or not
+    // The user has finished when there are no duplicates and there is no empyt values button
+    function isFinished() {
+        if(duplicates.length !== 0) {
+            return false;
+        }
+        for(var i = 0; i < 9; i++) {
+            for(var j = 0; j < 9; j++) {
+                if($('#btn-' + i + j).val() === '') {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    // Changes the bg based on whether the user has finished or not
     function checkFinished() {
-        // for(var i = 0; i < 9; i++) {
-        //     for(var )
-        // }
+        if (isFinished()) {
+            $('#message').show();
+        }
     }
 
     // A constructor for buttons
