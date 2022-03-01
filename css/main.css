@@ -8,7 +8,7 @@
     float: right;
 }
 
-input[id^="strim-btn-"] {
+input[id^="btn-"] {
     width: 40px;
-    max-height: 90px;
+    height: 40px;
 }
