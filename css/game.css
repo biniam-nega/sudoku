@@ -1,3 +1,24 @@
+@font-face{
+	font-family: "SSS";
+	src: url("../fonts/sss.ttf");
+}
+
+@font-face{
+	font-family: "pr";
+	src: url("../fonts/proxanys.ttf");
+}
+
+#num {
+    font-family: "pr"!important;
+    padding-left: 20px!important;
+}
+
+h1, h2 {
+    
+    font-size: 4em;
+    font-family: "SSS";
+}
+
 #timer {
     background-color: rgb(50, 101, 134);
     border: white solid 2px;
@@ -23,6 +44,10 @@ input[type="button"] {
 
 .given-btn {
     background-color: black;
+}
+
+#continue {
+    padding-top: 50px!important;
 }
 
 .duplicated {

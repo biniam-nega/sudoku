@@ -12,21 +12,22 @@
 </head>
 
 <body class="w3-sand">
-    <div class="w3-center w3-padding-32 w3-margin-top">
-        <h1>LEVEL 1</h1>
+    <div class="w3-padding-32 w3-margin-top">
+        <a href="index.html"><img src="img/Home.png" class="w3-right"/></a><br/>
+        <h1 class="w3-center">LEVEL<span id="num"> </span></h1>
     </div>
     <div class="w3-center w3-margin-top w3-margin-bottom w3-padding-64" id="game-area"></div>
-    <div class="w3-center w3-modal w3-margin-top" id="message">
+    <div class="w3-center w3-modal w3-margin-top" id="message" >
         <div class="w3-modal-content w3-animate-zoom">
             <div class="w3-container w3-white w3-center">
-                <input type="button"
-                    class="w3-display-topright w3-button w3-hover-red w3-hover-text-white w3-text-red w3-large"
-                    id="hide-flash-btn" value="&times;" />
-                <h2 class="w3-wide">Add Card</h2>
+                <h2 class="w3-wide w3-center">EXCELLENT!!</h2>
                 <hr />
-                <input type="text" id="term-txt" class="w3-input w3-margin-bottom" placeholder="Term..." /><br />
-                <textarea placeholder="Meaning..." id="meaning-txt" class="w3-input w3-margin-bottom"></textarea><br />
-                <input type="button" class="w3-button w3-pink w3-margin-bottom" value="Save" id="save-flash-btn" />
+                <!-- <input type="text" id="term-txt" class="w3-input w3-margin-bottom" placeholder="Term..." /><br />
+                <textarea placeholder="Meaning..." id="meaning-txt" class="w3-input w3-margin-bottom"></textarea><br /> -->
+                <div class="w3-padding-100"><h2>You finished in 2min</h2></div>
+                <div id="continue">
+                    <input type="button" class="w3-button w3-sand w3-margin-bottom" value="CONTINUE" id="continue-btn" />
+                </div>
             </div>
         </div>
     </div>

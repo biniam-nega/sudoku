@@ -1,16 +1,20 @@
+var lvl = parseInt(localStorage.level) - 1;
+
 $(document).ready(function () {
+
+    $('#num').html(lvl + 1);
 
     // Store data in the localStorage
     localStorage.level = localStorage.level || '1';
     var allGivens = [['11', '13', '14', '15', '17', '27', '28', '29', '31', '32', '36', '42', '44', '48', '49',
         '52', '53', '54', '56', '57', '58', '61', '62', '66', '68', '74', '78', '79', '81', '82', '83', '93', '95',
         '96', '97', '99'], ['11', '14', '15', '17', '27', '33', '34', '36', '38', '42', '53', '54', '55', '56',
-        '57', '68', '72', '74', '76', '77', '83', '93', '95', '96', '99'], ['12', '18', '23', '25', '27', 
-        '32', '34', '36', '37', '42', '44', '46', '48', '51', '52', '58' ,'59', '62', '64', '66', '68', '72', 
+        '57', '68', '72', '74', '76', '77', '83', '93', '95', '96', '99'], ['12', '18', '23', '25', '27',
+        '32', '34', '36', '38', '42', '44', '46', '48', '51', '52', '58', '59', '62', '64', '66', '68', '72',
         '74', '76', '78', '83', '85', '87', '92', '98']];
     var allValues = [[2, 7, 5, 3, 6, 1, 2, 4, 6, 8, 9, 6, 3, 8, 9, 3, 8, 6, 7, 2, 5, 4, 5, 1, 7, 2, 4, 3,
-        1, 4, 9, 6, 9, 5, 8, 7], [2, 7, 8, 6, 9, 6, 3, 4, 1, 1, 8, 6, 3, 5, 1, 7, 5, 9, 2, 4, 7, 3, 7, 8, 5], 
-        [2, 7, 9, 7, 3, 3, 4, 6, 9, 4, 5, 2, 8, 6, 5, 1, 4, 9, 7, 1, 6, 7, 2, 8, 3, 1, 5, 2, 8, 5]];
+        1, 4, 9, 6, 9, 5, 8, 7], [2, 7, 8, 6, 9, 6, 3, 4, 1, 1, 8, 6, 3, 5, 1, 7, 5, 9, 2, 4, 7, 3, 7, 8, 5],
+    [2, 7, 9, 7, 3, 3, 4, 6, 9, 4, 5, 2, 8, 6, 5, 1, 4, 9, 7, 1, 6, 7, 2, 8, 3, 1, 5, 2, 8, 5]];
 
     // Initialize some variables
     var rows = [];
@@ -18,10 +22,11 @@ $(document).ready(function () {
     var squares = [];
     var duplicates = [];
 
-    var lvl = parseInt(localStorage.level) - 1
     var givens = allGivens[lvl];
     var values = allValues[lvl];
-    
+
+    var timeSec = 0;
+
     // for adding the appropriate border
     var rightButtons = [];
     var bottomButtons = [];
@@ -35,6 +40,7 @@ $(document).ready(function () {
         // render all the buttons
         board = new Board(givens, values);
         board.renderBoard();
+        interval = setInterval(changeTime, 1000);
     }
 
     function getRowsColsSquares() {
@@ -73,10 +79,60 @@ $(document).ready(function () {
                 rowCounter = 0;
                 continue;
             }
-            console.log(squareCounter);
             squareCounter -= 3;
         }
-        console.log(squares)
+    }
+
+    // A constructor for buttons
+    function Button(value, id) {
+        this.render = function () {
+            var classes = '';
+
+            // add background-color
+            if (givens.inArray(id)) {
+                classes += 'w3-gray w3-hover-gray';
+            }
+            else {
+                classes += 'w3-white w3-hover-light-gray';
+            }
+
+            // add border
+            if (rightButtons.inArray(id)) {
+                classes += ' my-right-btn';
+            }
+
+            if (bottomButtons.inArray(id)) {
+                classes += ' my-bottom-btn';
+            }
+
+            return '<input type="button" class="w3-right-btn w3-button ' + classes + '" value="' + value + '" id="btn-' + id + '"/>';
+        }
+    }
+
+    // A constructor for the entire board
+    function Board(givens, values) {
+        this.renderBoard = function () {
+            counter = 0;
+            for (var i = 1; i <= 9; i++) {
+                for (var j = 1; j <= 9; j++) {
+                    var index = '' + i + j;
+                    if (givens.inArray(index)) {
+                        var button = new Button(values[counter], index)
+                        $('#game-area').html($('#game-area').html() + button.render());
+                        counter++;
+                        continue;
+                    }
+                    var button = new Button('', index);
+                    $('#game-area').html($('#game-area').html() + button.render());
+                }
+                $('#game-area').html($('#game-area').html() + '<br/>');
+            }
+            addListeners(givens);
+        }
+    }
+
+    function changeTime() {
+        timeSec++;
     }
 
 
@@ -115,8 +171,6 @@ $(document).ready(function () {
     function checkDif() {
         for (var i = 0; i < duplicates.length; i++) {
             if (duplicates[i][0].val() !== duplicates[i][1].val()) {
-                var btn1Index = /[0-9]+/.exec(duplicates[i][0].attr('id'))[0];
-                var btn2Index = /[0-9]+/.exec(duplicates[i][1].attr('id'))[0];
                 duplicates[i][0].removeClass('duplicated');
                 duplicates[i][1].removeClass('duplicated');
                 duplicates = duplicates.remove(i);
@@ -178,57 +232,20 @@ $(document).ready(function () {
     function checkFinished() {
         if (isFinished()) {
             $('#message').show();
-        }
-    }
-
-    // A constructor for buttons
-    function Button(value, id) {
-        this.render = function () {
-            var classes = '';
-
-            // add background-color
-            if (givens.inArray(id)) {
-                classes += 'w3-gray w3-hover-gray';
+            if(lvl == 2) {
+                $('#continue').click(function () {
+                    window.location = 'http://localhost/js_sandbox/projects/4.sudoku/index.html';
+                });
             }
             else {
-                classes += 'w3-white w3-hover-light-gray';
+                $('#continue').click(function () {
+                    localStorage.level = '' + (1 + parseInt(localStorage.level));
+                    window.location = window.location;
+                });
             }
 
-            // add border
-            if (rightButtons.inArray(id)) {
-                classes += ' my-right-btn';
-            }
-
-            if (bottomButtons.inArray(id)) {
-                classes += ' my-bottom-btn';
-            }
-
-            return '<input type="button" class="w3-right-btn w3-button ' + classes + '" value="' + value + '" id="btn-' + id + '"/>';
         }
     }
-
-    // A constructor for the entire board
-    function Board(givens, values) {
-        this.renderBoard = function () {
-            counter = 0;
-            for (var i = 1; i <= 9; i++) {
-                for (var j = 1; j <= 9; j++) {
-                    var index = '' + i + j;
-                    if (givens.inArray(index)) {
-                        var button = new Button(values[counter], index)
-                        $('#game-area').html($('#game-area').html() + button.render());
-                        counter++;
-                        continue;
-                    }
-                    var button = new Button('', index);
-                    $('#game-area').html($('#game-area').html() + button.render());
-                }
-                $('#game-area').html($('#game-area').html() + '<br/>');
-            }
-            addListeners(givens);
-        }
-    }
-
 
     // initialization
     init();
