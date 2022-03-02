@@ -2,7 +2,7 @@ var lvl = parseInt(localStorage.level) - 1;
 
 $(document).ready(function () {
 
-    $('#num').html(lvl + 1);
+    $('.num').html(lvl + 1);
 
     // Store data in the localStorage
     localStorage.level = localStorage.level || '1';
@@ -135,6 +135,18 @@ $(document).ready(function () {
         timeSec++;
     }
 
+    function getTime() {
+        var holder = timeSec;
+
+        var hour = parseInt(holder / 3600);
+        holder %= 3600;
+        var min = parseInt(holder / 60);
+        holder %= 60;
+        sec = holder;
+
+        return (hour == 0? '': '<span class="num">' + hour + '</span>' + 'hr: ') + (min == 0? '': '<span class="num">' + min + '</span>' + 'min: ') + (sec == 0? '': '<span class="num">' + sec + '</span>' + 'sec');
+    }
+
 
     // A function to add event handler to all the buttons
     function addListeners(givens) {
@@ -231,6 +243,7 @@ $(document).ready(function () {
     // Changes the bg based on whether the user has finished or not
     function checkFinished() {
         if (isFinished()) {
+            $('#time').html(getTime());
             $('#message').show();
             if(lvl == 2) {
                 $('#continue').click(function () {

@@ -8,9 +8,9 @@
 	src: url("../fonts/proxanys.ttf");
 }
 
-#num {
+.num {
     font-family: "pr"!important;
-    padding-left: 20px!important;
+    padding-left: 10px!important;
 }
 
 h1, h2 {
@@ -44,6 +44,10 @@ input[type="button"] {
 
 .given-btn {
     background-color: black;
+}
+
+#continue-btn {
+    font-family: 'SSS';
 }
 
 #continue {
