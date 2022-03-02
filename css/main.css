@@ -14,15 +14,20 @@ input[type="button"] {
 }
 
 .my-right-btn {
-    border-right: black solid 2px!important
+    border-right: black solid 2px!important;
 }
 
 .my-bottom-btn {
-    border-bottom: black solid 2px!important
+    border-bottom: black solid 2px!important;
 }
 
 .given-btn {
     background-color: black;
+}
+
+.duplicated {
+    color: white!important;
+    background-color: #f44336!important;
 }
 
 #message {

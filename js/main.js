@@ -23,7 +23,6 @@ $(document).ready(function () {
         // render all the buttons
         board = new Board(givens, values);
         board.renderBoard();
-
     }
 
     function getRowsColsSquares() {
@@ -45,17 +44,16 @@ $(document).ready(function () {
                 squares[squareCounter].push(index);
 
                 if ((j + 1) % 3 === 0) {
-                    if(j !== 8) {
+                    if (j !== 8) {
                         rightButtons.push(index);
-                        squareCounter++;   
                     }
+                    squareCounter++;
                 }
 
-                if((rowCounter + 1) % 3 == 0) {
-                    if(i == 8) {
-                        continue;
+                if ((rowCounter + 1) % 3 == 0) {
+                    if (i !== 8) {
+                        bottomButtons.push(index);
                     }
-                    bottomButtons.push(index);
                 }
             }
             rowCounter++;
@@ -63,10 +61,10 @@ $(document).ready(function () {
                 rowCounter = 0;
                 continue;
             }
+            console.log(squareCounter);
             squareCounter -= 3;
         }
-        // console.log(rigthButtons);
-        // console.log(bottomButtons);
+        console.log(squares)
     }
 
 
@@ -98,8 +96,8 @@ $(document).ready(function () {
     }
 
     function changeBg(btn1, btn2) {
-        btn1.css('background-color', 'red');
-        btn2.css('background-color', 'red');
+        btn1.addClass('duplicated');
+        btn2.addClass('duplicated');
     }
 
     function checkDif() {
@@ -107,15 +105,15 @@ $(document).ready(function () {
             if (duplicates[i][0].val() !== duplicates[i][1].val()) {
                 var btn1Index = /[0-9]+/.exec(duplicates[i][0].attr('id'))[0];
                 var btn2Index = /[0-9]+/.exec(duplicates[i][1].attr('id'))[0];
-                duplicates[i][0].css('background-color', givens.inArray(btn1Index) ? 'darkgray': 'white');
-                duplicates[i][1].css('background-color', givens.inArray(btn2Index) ? 'darkgray': 'white');
+                duplicates[i][0].removeClass('duplicated');
+                duplicates[i][1].removeClass('duplicated');
                 duplicates = duplicates.remove(i);
                 i--;
             }
         }
         for (var i = 0; i < duplicates.length; i++) {
-            duplicates[i][0].css('background-color', 'red');
-            duplicates[i][1].css('background-color', 'red');
+            duplicates[i][0].addClass('duplicated');
+            duplicates[i][1].addClass('duplicated');
         }
     }
 
@@ -151,12 +149,12 @@ $(document).ready(function () {
     // A function that checks whether the game is finished or not
     // The user has finished when there are no duplicates and there is no empyt values button
     function isFinished() {
-        if(duplicates.length !== 0) {
+        if (duplicates.length !== 0) {
             return false;
         }
-        for(var i = 0; i < 9; i++) {
-            for(var j = 0; j < 9; j++) {
-                if($('#btn-' + (i + 1) + (j + 1)).val() === '') {
+        for (var i = 0; i < 9; i++) {
+            for (var j = 0; j < 9; j++) {
+                if ($('#btn-' + (i + 1) + (j + 1)).val() === '') {
                     return false;
                 }
             }
@@ -177,7 +175,7 @@ $(document).ready(function () {
             var classes = '';
 
             // add background-color
-            if(givens.inArray(id)) {
+            if (givens.inArray(id)) {
                 classes += 'w3-dark-gray w3-hover-dark-gray';
             }
             else {
@@ -185,12 +183,11 @@ $(document).ready(function () {
             }
 
             // add border
-            if(rightButtons.inArray(id)) {
-                console.log(id);
+            if (rightButtons.inArray(id)) {
                 classes += ' my-right-btn';
             }
-            
-            if(bottomButtons.inArray(id)) {
+
+            if (bottomButtons.inArray(id)) {
                 classes += ' my-bottom-btn';
             }
 
