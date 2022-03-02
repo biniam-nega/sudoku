@@ -1,15 +1,27 @@
 $(document).ready(function () {
 
+    // Store data in the localStorage
+    localStorage.level = localStorage.level || '1';
+    var allGivens = [['11', '13', '14', '15', '17', '27', '28', '29', '31', '32', '36', '42', '44', '48', '49',
+        '52', '53', '54', '56', '57', '58', '61', '62', '66', '68', '74', '78', '79', '81', '82', '83', '93', '95',
+        '96', '97', '99'], ['11', '14', '15', '17', '27', '33', '34', '36', '38', '42', '53', '54', '55', '56',
+        '57', '68', '72', '74', '76', '77', '83', '93', '95', '96', '99'], ['12', '18', '23', '25', '27', 
+        '32', '34', '36', '37', '42', '44', '46', '48', '51', '52', '58' ,'59', '62', '64', '66', '68', '72', 
+        '74', '76', '78', '83', '85', '87', '92', '98']];
+    var allValues = [[2, 7, 5, 3, 6, 1, 2, 4, 6, 8, 9, 6, 3, 8, 9, 3, 8, 6, 7, 2, 5, 4, 5, 1, 7, 2, 4, 3,
+        1, 4, 9, 6, 9, 5, 8, 7], [2, 7, 8, 6, 9, 6, 3, 4, 1, 1, 8, 6, 3, 5, 1, 7, 5, 9, 2, 4, 7, 3, 7, 8, 5], 
+        [2, 7, 9, 7, 3, 3, 4, 6, 9, 4, 5, 2, 8, 6, 5, 1, 4, 9, 7, 1, 6, 7, 2, 8, 3, 1, 5, 2, 8, 5]];
+
     // Initialize some variables
     var rows = [];
     var columns = [];
     var squares = [];
     var duplicates = [];
-    var givens = ['11', '13', '14', '15', '17', '27', '28', '29', '31', '32', '36', '42', '44', '48', '49',
-        '52', '53', '54', '56', '57', '58', '61', '62', '66', '68', '74', '78', '79', '81', '82', '83', '93', '95',
-        '96', '97', '99'];
-    var values = [2, 7, 5, 3, 6, 1, 2, 4, 6, 8, 9, 6, 3, 8, 9, 3, 8, 6, 7, 2, 5, 4, 5, 1, 7, 2, 4, 3,
-        1, 4, 9, 6, 9, 5, 8, 7];
+
+    var lvl = parseInt(localStorage.level) - 1
+    var givens = allGivens[lvl];
+    var values = allValues[lvl];
+    
     // for adding the appropriate border
     var rightButtons = [];
     var bottomButtons = [];
@@ -147,7 +159,7 @@ $(document).ready(function () {
     }
 
     // A function that checks whether the game is finished or not
-    // The user has finished when there are no duplicates and there is no empyt values button
+    // The user has finished when there are no duplicates and there is no empty valued button
     function isFinished() {
         if (duplicates.length !== 0) {
             return false;
@@ -176,7 +188,7 @@ $(document).ready(function () {
 
             // add background-color
             if (givens.inArray(id)) {
-                classes += 'w3-dark-gray w3-hover-dark-gray';
+                classes += 'w3-gray w3-hover-gray';
             }
             else {
                 classes += 'w3-white w3-hover-light-gray';
