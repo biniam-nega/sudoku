@@ -1,26 +1,34 @@
 $(document).ready(function () {
 
+    // Initialize some variables
+    var rows = [];
+    var columns = [];
+    var squares = [];
+    var duplicates = [];
+    var givens = ['11', '13', '14', '15', '17', '27', '28', '29', '31', '32', '36', '42', '44', '48', '49',
+        '52', '53', '54', '56', '57', '58', '61', '62', '66', '68', '74', '78', '79', '81', '82', '83', '93', '95',
+        '96', '97', '99'];
+    var values = [2, 7, 5, 3, 6, 1, 2, 4, 6, 8, 9, 6, 3, 8, 9, 3, 8, 6, 7, 2, 5, 4, 5, 1, 7, 2, 4, 3,
+        1, 4, 9, 6, 9, 5, 8, 7];
+    // for adding the appropriate border
+    var rightButtons = [];
+    var bottomButtons = [];
+
     function init() {
         // Add some functionalities to the Array prototype
         my_lib.augmentArray();
 
-        // Initialize some variables
-        rows = [];
-        columns = [];
-        squares = [];
-        duplicates = [];
-        givens = ['11', '13', '14', '15', '17', '27', '28', '29', '31', '32', '36', '42', '44', '48', '49',
-            '52', '53', '54', '56', '57', '58', '61', '62', '66', '68', '74', '78', '79', '81', '82', '83', '93', '95',
-            '96', '97', '99'];
-        values = [2, 7, 5, 3, 6, 1, 2, 4, 6, 8, 9, 6, 3, 8, 9, 3, 8, 6, 7, 2, 5, 4, 5, 1, 7, 2, 4, 3,
-            1, 4, 9, 6, 9, 5, 8, 7];
-
         getRowsColsSquares();
+
+        // render all the buttons
+        board = new Board(givens, values);
+        board.renderBoard();
+
     }
 
     function getRowsColsSquares() {
         // Get the buttons in the same row, column or square
-        var rowCounter = 0, squareCounter = 0;
+        var squareCounter = 0, rowCounter = 0;
         for (var i = 0; i < 9; i++) {
             for (var j = 0; j < 9; j++) {
                 var index = '' + (i + 1) + (j + 1);
@@ -35,15 +43,30 @@ $(document).ready(function () {
                 // get the squares
                 squares[squareCounter] = squares[squareCounter] || [];
                 squares[squareCounter].push(index);
+
                 if ((j + 1) % 3 === 0) {
-                    squareCounter++;
+                    if(j !== 8) {
+                        rightButtons.push(index);
+                        squareCounter++;   
+                    }
+                }
+
+                if((rowCounter + 1) % 3 == 0) {
+                    if(i == 8) {
+                        continue;
+                    }
+                    bottomButtons.push(index);
                 }
             }
+            rowCounter++;
             if (squares[squareCounter - 1].length === 9) {
+                rowCounter = 0;
                 continue;
             }
             squareCounter -= 3;
         }
+        // console.log(rigthButtons);
+        // console.log(bottomButtons);
     }
 
 
@@ -51,7 +74,7 @@ $(document).ready(function () {
     function addListeners(givens) {
         for (var i = 1; i <= 9; i++) {
             for (var j = 1; j <= 9; j++) {
-                var index = '' + (i + 1) + (j + 1);
+                var index = '' + i + j;
                 if (givens.inArray(index)) {
                     continue;
                 }
@@ -63,10 +86,10 @@ $(document).ready(function () {
                             value = '';
                         }
                         $(this).val(value);
+                        checkDif();
                         check(c, 'row');
                         check(c, 'column');
                         check(c, 'square');
-                        checkDif();
                         checkFinished();
                     });
                 }());
@@ -89,6 +112,10 @@ $(document).ready(function () {
                 duplicates = duplicates.remove(i);
                 i--;
             }
+        }
+        for (var i = 0; i < duplicates.length; i++) {
+            duplicates[i][0].css('background-color', 'red');
+            duplicates[i][1].css('background-color', 'red');
         }
     }
 
@@ -129,7 +156,7 @@ $(document).ready(function () {
         }
         for(var i = 0; i < 9; i++) {
             for(var j = 0; j < 9; j++) {
-                if($('#btn-' + i + j).val() === '') {
+                if($('#btn-' + (i + 1) + (j + 1)).val() === '') {
                     return false;
                 }
             }
@@ -147,9 +174,27 @@ $(document).ready(function () {
     // A constructor for buttons
     function Button(value, id) {
         this.render = function () {
-            var bg = value === '' ? 'white' : 'darkgray';
-            var hover = value === '' ? '' : 'w3-hover-gray'
-            return '<input type="button" class="w3-button w3-cicle w3-border ' + hover + '" value="' + value + '" id="btn-' + id + '" style="background-color:' + bg + '"/>';
+            var classes = '';
+
+            // add background-color
+            if(givens.inArray(id)) {
+                classes += 'w3-dark-gray w3-hover-dark-gray';
+            }
+            else {
+                classes += 'w3-white w3-hover-light-gray';
+            }
+
+            // add border
+            if(rightButtons.inArray(id)) {
+                console.log(id);
+                classes += ' my-right-btn';
+            }
+            
+            if(bottomButtons.inArray(id)) {
+                classes += ' my-bottom-btn';
+            }
+
+            return '<input type="button" class="w3-right-btn w3-button ' + classes + '" value="' + value + '" id="btn-' + id + '"/>';
         }
     }
 
@@ -178,8 +223,4 @@ $(document).ready(function () {
 
     // initialization
     init();
-
-    // render all the buttons
-    var board = new Board(givens, values);
-    board.renderBoard();
 });
